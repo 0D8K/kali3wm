@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-
+i3file="~/.config/i3/config"
 # Array en el que el primer argumento es la descripción y en la segunda el valor que se agrega a i3 config
 declare -A tools=(
   ["nitrogen"]="Fondo de pantalla,exec --no-startup-id nitrogen --restore"
@@ -28,7 +28,19 @@ function i3_install()
   
   echo "- Copiando archivo de configuración"
   mkdir -p ~/.config/i3/
-  cp /etc/i3/config ~/.config/i3/config
+  cp /etc/i3/config $i3file
+
+  echo "- Agregando español y tecla WIN como meta"
+  sed -i "1i exec_always --no-startup-id setxkbmap -layout es"
+
+  if grep -q "\$mod" ~/.config/i3/config; then
+    sed -i '/^set \$mod Mod1$/ s/Mod1/Mod4/' i3file
+  else
+    sed -i 's/Mod1/\$mod/g' i3file
+    sed -i '1i set $mod Mod4'
+
+  fi
+
 }
 
 function install_optional()
@@ -39,7 +51,7 @@ function install_optional()
   IFS=',' read -ra comando <<< "${tools[$package]}"
   if ! test -z "${comando[1]}"; then
     echo "Agregando ${comando[1]}"  
-    sed -i "1i ${comando[1]}" ~/.config/i3/config
+    sed -i "1i ${comando[1]}" $i3file
   fi
 
 }
