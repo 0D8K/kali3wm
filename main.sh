@@ -6,15 +6,15 @@ declare -A tools=(
   ["nitrogen"]="Fondo de pantalla,exec --no-startup-id nitrogen --restore"
   ["imwheel"]="Corrige giro de la rueda del ratón en vmware,exec --no-startup-id imwheel --kill"
   ["numlockx"]="Bloquea los números al iniciar,exec_always --no-startup-id numlockx"
-  ["neovim"]="Editor de texto en consola,exec --no-startup-id nitrogen --restore"
-  ["tmux"]="Terminal multiplexer,exec --no-startup-id nitrogen --restore"
-  ["network-manager"]="Gestor de red,exec --no-startup-id nitrogen --restore"
-  ["picom"]="Software para gestión de transparencias,exec --no-startup-id nitrogen --restore"
-  ["git"]="Git,exec --no-startup-id nitrogen --restore"
-  ["dmenu"]="Menú minimalista,exec --no-startup-id nitrogen --restore"
-  ["notify-osd"]="Notificaciones en popup,exec --no-startup-id nitrogen --restore"
-  ["pcmanfm"]="Explorador de archivo,exec --no-startup-id nitrogen --restore"
-  ["alsa-utils"]="Audio,exec --no-startup-id nitrogen --restore"
+  ["neovim"]="Editor de texto en consola"
+  ["tmux"]="Terminal multiplexer"
+  ["network-manager"]="Gestor de red"
+  ["picom"]="Software para gestión de transparencias,exec_always --no-startup-id picom --config ~/.config/picom.conf"
+  ["git"]="Git"
+  ["dmenu"]="Menú minimalista"
+  ["notify-osd"]="Notificaciones en popup"
+  ["pcmanfm"]="Explorador de archivo"
+  ["alsa-utils"]="Audio"
 )
 
 
@@ -35,13 +35,12 @@ function install_optional()
 {
   echo -e "   Instalando... \e[32m$package\e[0m"
   sudo apt install $package
-
-  echo "Editando archivo de configuración i3"
   
   IFS=',' read -ra comando <<< "${tools[$package]}"
-  echo "Agregando ${comando[1]}"  
-   
-  sed -i "1i ${comando[1]}" ~/.config/i3/config
+  if ! test -z "${comando[1]}"; then
+    echo "Agregando ${comando[1]}"  
+    sed -i "1i ${comando[1]}" ~/.config/i3/config
+  fi
 
 }
 
@@ -64,8 +63,8 @@ function package_selection
 
 
 # INICIAMOS
-#install
-#configure
+i3_install
+
 echo -e "Software opcional:\n"
 
 for tool in "${!tools[@]}"; do
