@@ -4,8 +4,8 @@
 # Array en el que el primer argumento es la descripción y en la segunda el valor que se agrega a i3 config
 declare -A tools=(
   ["nitrogen"]="Fondo de pantalla,exec --no-startup-id nitrogen --restore"
-  ["imwheel"]="Corrige giro de la rueda del ratón en vmware,exec --no-startup-id nitrogen --restore"
-  ["numlockx"]="Bloquea los números al iniciar,exec --no-startup-id nitrogen --restore"
+  ["imwheel"]="Corrige giro de la rueda del ratón en vmware,exec --no-startup-id imwheel --kill"
+  ["numlockx"]="Bloquea los números al iniciar,exec_always --no-startup-id numlockx"
   ["neovim"]="Editor de texto en consola,exec --no-startup-id nitrogen --restore"
   ["tmux"]="Terminal multiplexer,exec --no-startup-id nitrogen --restore"
   ["network-manager"]="Gestor de red,exec --no-startup-id nitrogen --restore"
@@ -40,7 +40,8 @@ function install_optional()
   
   IFS=',' read -ra comando <<< "${tools[$package]}"
   echo "Agregando ${comando[1]}"  
-  sed -i '1i ${comando[1]}' ~/.config/i3/config
+   
+  sed -i "1i ${comando[1]}" ~/.config/i3/config
 
 }
 
