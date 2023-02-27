@@ -26,7 +26,7 @@ function i3_install()
   sudo apt update
   
   informacion "Instalando entorno i3"
-  sudo apt install -y i3-gaps i3blocks xorg xinit 
+  sudo apt install -y i3 i3blocks xorg xinit 
   
   informacion "Copiando archivo de configuración"
   mkdir -p ~/.config/i3/
@@ -42,6 +42,18 @@ function i3_install()
     sed -i '1i set $mod Mod4' $i3file
 
   fi
+
+  informacion "Quitando bordes"
+sudo sed -i '1i\
+# ELIMINAR NOMBRE VENTANAS PARA GAPS Y AÑADIENDO MARGEN\
+# You can also use any non-zero value if you'\''d like to have a border\
+for_window [class=".*"] border pixel 1\
+gaps inner 13\
+gaps outer 13\
+# class                 border  backgr. text    indicator child_border\
+client.focused_inactive #0d1010 #212121 #d9d9d9 #0d1010 #063340\
+client.unfocused        #0d1010 #212121 #d9d9d9 #424242 #063340\
+client.focused          #58ba44 #cecece #000000 #58ba44 #58ba44\n\n' $i3file
 
 }
 
