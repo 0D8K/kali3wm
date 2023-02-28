@@ -48,8 +48,8 @@ sudo sed -i '1i\
 # ELIMINAR NOMBRE VENTANAS PARA GAPS Y AÑADIENDO MARGEN\
 # You can also use any non-zero value if you'\''d like to have a border\
 for_window [class=".*"] border pixel 1\
-gaps inner 13\
-gaps outer 13\
+gaps inner 9\
+gaps outer 9\
 # class                 border  backgr. text    indicator child_border\
 client.focused_inactive #0d1010 #212121 #d9d9d9 #0d1010 #063340\
 client.unfocused        #0d1010 #212121 #d9d9d9 #424242 #063340\
