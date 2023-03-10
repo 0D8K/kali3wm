@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Array en el que el primer argumento es la descripción y en la segunda el valor que se agrega a i3 config
+
+declare -A tools=(
+  ["nitrogen"]="Fondo de pantalla,sed -i '1i exec --no-startup-id nitrogen --restore' ~/.config/i3/config"
+  ["imwheel"]="Corrige giro de la rueda del ratón en vmware,sed -i '1i exec --no-startup-id imwheel --kill' ~/.config/i3/config"
+  ["numlockx"]="Bloquea los números al iniciar,sed -i '1i exec_always --no-startup-id numlockx' ~/.config/i3/config"
+  ["neovim"]="Editor de texto en consola"
+  ["tmux"]="Terminal multiplexer"
+  ["network-manager"]="Gestor de red"
+  ["picom"]="Software para gestión de transparencias,sed -i '1i exec_always --no-startup-id picom --config ~/.config/picom.conf' ~/.config/i3/config"
+  ["git"]="Git"
+  ["suckless-tools"]="Contiene dmenu"
+  ["notify-osd"]="Notificaciones en popup"
+  ["pcmanfm"]="Explorador de archivo"
+  ["alsa-utils"]="Audio"
+)

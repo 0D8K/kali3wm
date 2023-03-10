@@ -1,23 +1,9 @@
 #!/usr/bin/bash
 
 source plantillas
+source tools
 
 i3file=~/.config/i3/config
-# Array en el que el primer argumento es la descripción y en la segunda el valor que se agrega a i3 config
-declare -A tools=(
-  ["nitrogen"]="Fondo de pantalla,exec --no-startup-id nitrogen --restore"
-  ["imwheel"]="Corrige giro de la rueda del ratón en vmware,exec --no-startup-id imwheel --kill"
-  ["numlockx"]="Bloquea los números al iniciar,exec_always --no-startup-id numlockx"
-  ["neovim"]="Editor de texto en consola"
-  ["tmux"]="Terminal multiplexer"
-  ["network-manager"]="Gestor de red"
-  ["picom"]="Software para gestión de transparencias,exec_always --no-startup-id picom --config ~/.config/picom.conf"
-  ["git"]="Git"
-  ["suckless-tools"]="Contiene dmenu"
-  ["notify-osd"]="Notificaciones en popup"
-  ["pcmanfm"]="Explorador de archivo"
-  ["alsa-utils"]="Audio"
-)
 
 
 function i3_install()
@@ -60,12 +46,12 @@ client.focused          #58ba44 #cecece #000000 #58ba44 #58ba44\n\n' $i3file
 function install_optional()
 {
   informacion "   Instalando... \e[32m$1\e[0m"
-  sudo apt install $1
   
   IFS=',' read -ra comando <<< "${tools[$1]}"
+  sudo apt install $1
   if ! test -z "${comando[1]}"; then
     informacion "Agregando ${comando[1]}"  
-    sed -i "1i ${comando[1]}" $i3file
+    eval ${comando[1]}
   fi
 
 }
@@ -83,7 +69,7 @@ function package_selection
     informacion "Se instalara lo siguiente:\n"
     for package in $@; do
       if printf '%s\n' "${!tools[@]}" | grep -q $1; then
-        install_optional package
+        install_optional $package
       fi
     done
     
